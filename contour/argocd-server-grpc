@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-grpc
+  annotations:
+    kubernetes.io/ingress.class: contour-internal
+spec:
+  rules:
+  - host: grpc-internal.path.to.argocd.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: https
+  tls:
+  - hosts:
+    - grpc-internal.path.to.argocd.io
+    secretName: your-certificate-name
