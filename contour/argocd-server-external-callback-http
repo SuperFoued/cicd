@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-external-callback-http
+  annotations:
+    kubernetes.io/ingress.class: contour-external
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+  - host: external.path.to.argocd.io
+    http:
+      paths:
+      - path: /api/dex/callback
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: http
+  tls:
+  - hosts:
+    - external.path.to.argocd.io
+    secretName: your-certificate-name
